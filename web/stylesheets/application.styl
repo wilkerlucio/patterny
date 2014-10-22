@@ -6,17 +6,20 @@ html, body {
   overflow: hidden;
 }
 
+body {
+  display: flex;
+  margin: 0;
+  flex-direction: column;
+}
+
 #app-container {
+  flex: 1;
   display: flex;
   align-items: flex-start;
 }
 
-#view-area {
-  border: 1px solid black;
-  flex: 1;
-  height: 300px;
-}
-
 #current-pattern {
-  margin-left: 20px
+  box-shadow: #000 0px 0px 10px 3px;
+  border: 10px solid white;
+  margin: 20px auto;
 }

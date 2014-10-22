@@ -107,8 +107,7 @@
 
 (defn init []
   (.log js/console "Initializing...")
-  (let [view-area ($ "#view-area")
-        cur-img ($ "#current-pattern")]
+  (let [cur-img ($ "#current-pattern")]
     (dochan [[file] (file-dropper ($ "body"))]
       (let [image (-> (read-file-as-data-url file) <!
                       (load-image) <!)
@@ -116,7 +115,7 @@
             size (bench "Find pattern" (find-pattern canvas))
             pattern-data (bench "Generating data" (data-from-canvas-crop canvas size))]
         (.log js/console (str "url('" pattern-data "')"))
-        (dom/set-style view-area "backgroundImage" (str "url('" pattern-data "')"))
+        (dom/set-style dom/body "backgroundImage" (str "url('" pattern-data "')"))
         (set! (.-src cur-img) pattern-data)))))
 
 (init)

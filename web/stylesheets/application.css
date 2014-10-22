@@ -3,7 +3,29 @@ body {
   height: 100vh;
   overflow: hidden;
 }
+body {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  margin: 0;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
 #app-container {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -17,17 +39,9 @@ body {
   -webkit-align-items: flex-start;
   align-items: flex-start;
 }
-#view-area {
-  border: 1px solid #000;
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -o-box-flex: 1;
-  box-flex: 1;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  height: 300px;
-}
 #current-pattern {
-  margin-left: 20px;
+  -webkit-box-shadow: #000 0px 0px 10px 3px;
+  box-shadow: #000 0px 0px 10px 3px;
+  border: 10px solid #fff;
+  margin: 20px auto;
 }
