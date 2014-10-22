@@ -4,12 +4,21 @@
 html, body {
   height: 100vh;
   overflow: hidden;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 body {
   display: flex;
   margin: 0;
   flex-direction: column;
+}
+
+h1 {
+  font-family: 'Ubuntu', sans-serif;
+  text-align: center;
+  text-shadow: 1px 0px 1px #ccc, 0px 1px 1px #eee, 2px 1px 1px #ccc, 1px 2px 1px #eee, 3px 2px 1px #ccc, 2px 3px 1px #eee, 4px 3px 1px #ccc, 3px 4px 1px #eee, 5px 4px 1px #ccc, 4px 5px 1px #eee, 6px 5px 1px #ccc, 5px 6px 1px #eee, 7px 6px 1px #ccc;
+  //text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  font-size: 60px;
 }
 
 #app-container {
@@ -22,4 +31,15 @@ body {
   box-shadow: #000 0px 0px 10px 3px;
   border: 10px solid white;
   margin: 20px auto;
+  display: block;
+}
+
+#image-area {
+  display: none;
+  flex: 1;
+  text-align: center;
+}
+
+body.processed #image-area {
+  display: block;
 }

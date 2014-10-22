@@ -106,7 +106,6 @@
     (.toDataURL new-canvas "image/png")))
 
 (defn init []
-  (.log js/console "Initializing...")
   (let [cur-img ($ "#current-pattern")]
     (dochan [[file] (file-dropper ($ "body"))]
       (let [image (-> (read-file-as-data-url file) <!
@@ -114,8 +113,10 @@
             [canvas] (canvas-from-image image)
             size (bench "Find pattern" (find-pattern canvas))
             pattern-data (bench "Generating data" (data-from-canvas-crop canvas size))]
-        (.log js/console (str "url('" pattern-data "')"))
-        (dom/set-style dom/body "backgroundImage" (str "url('" pattern-data "')"))
-        (set! (.-src cur-img) pattern-data)))))
+        (doto dom/body
+              (dom/set-style! "backgroundImage" (str "url('" pattern-data "')"))
+              (dom/add-class! "processed"))
+        (set! (.-src cur-img) pattern-data)))
+    (.log js/console (clj->js "Ready"))))
 
 (init)
