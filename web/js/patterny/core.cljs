@@ -70,7 +70,8 @@
         possibles (drop 1 (range (div-ceil (count coll) 2)))]
     (->> possibles
          (filter test-size)
-         first)))
+         first
+         #(or % (count coll)))))
 
 (defn compute-axis [canvas axis]
   (let [{:keys [width height]} (get-size canvas)
