@@ -8,10 +8,6 @@
             [clojure.browser.repl :as repl]
             [clojure.string :as str]))
 
-(defn $
-  ([query] ($ js/document query))
-  ([target query] (.querySelector target query)))
-
 (defn event-files [evt]
   (array-seq (.. evt -event_ -dataTransfer -files)))
 
@@ -113,8 +109,8 @@
     (.toDataURL new-canvas "image/png")))
 
 (defn init []
-  (let [cur-img ($ "#current-pattern")]
-    (dochan [[file] (file-dropper ($ "body"))]
+  (let [cur-img (dom/$ "#current-pattern")]
+    (dochan [[file] (file-dropper dom/body)]
       (let [image (-> (read-file-as-data-url file) <!
                       (load-image) <!)
             [canvas] (canvas-from-image image)
