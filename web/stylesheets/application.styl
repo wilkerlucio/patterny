@@ -76,7 +76,7 @@ body.processed {
 .drop-info {
   background: #115794;
   color: white;
-  top: 0;
+  top: 50vh;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -84,9 +84,10 @@ body.processed {
   padding: 18px 10px;
   text-align: center;
   font-size: 22px;
-  transition: opacity 250ms;
+  transition: all 250ms;
   pointer-events: none;
-  opacity: 0;
+  //opacity: 0;
+  margin-top: 50vh;
   display: flex;
   align-items: center;
 
@@ -97,6 +98,7 @@ body.processed {
 
 body.dragging-over {
   .drop-info {
-    opacity: 0.9;
+    //opacity: 0.9;
+    margin-top: 0;
   }
 }
