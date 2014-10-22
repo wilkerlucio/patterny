@@ -9,5 +9,3 @@ pom.xml.asc
 /.nrepl-port
 out/
 repl/
-web/js
-web/stylesheets/*.css
