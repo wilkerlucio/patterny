@@ -1,3 +1,8 @@
+html,
+body {
+  height: 100vh;
+  overflow: hidden;
+}
 #drop-container {
   border: 1px solid #000;
   width: 300px;
