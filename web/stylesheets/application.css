@@ -5,6 +5,7 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
 }
 body {
+  background-color: #fff;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -20,10 +21,14 @@ body {
   flex-direction: column;
 }
 h1 {
+coko
   font-family: 'Ubuntu', sans-serif;
   text-align: center;
-  text-shadow: 1px 0px 1px #ccc, 0px 1px 1px #eee, 2px 1px 1px #ccc, 1px 2px 1px #eee, 3px 2px 1px #ccc, 2px 3px 1px #eee, 4px 3px 1px #ccc, 3px 4px 1px #eee, 5px 4px 1px #ccc, 4px 5px 1px #eee, 6px 5px 1px #ccc, 5px 6px 1px #eee, 7px 6px 1px #ccc;
+  text-shadow: 2px 2px 3px rgba(255,255,255,0.1);
   font-size: 60px;
+}
+h2 {
+  text-align: center;
 }
 #app-container {
   -webkit-box-flex: 1;
@@ -64,6 +69,29 @@ h1 {
   flex: 1;
   text-align: center;
 }
+.pattern-label {
+  background: #fff;
+  display: inline-block;
+  padding: 8px 10px;
+  border: 3px solid #000;
+  font-size: 18px;
+}
+small {
+  font-size: 12px;
+  color: #b5b5b5;
+}
+.instructions {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
 body.processed #image-area {
   display: block;
+}
+body.processed .instructions {
+  display: none;
 }
