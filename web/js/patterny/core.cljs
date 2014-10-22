@@ -68,10 +68,10 @@
           (every? (partial size-match? size)
                   (options-for-size size)))
         possibles (drop 1 (range (div-ceil (count coll) 2)))]
-    (->> possibles
-         (filter test-size)
-         first
-         #(or % (count coll)))))
+    (or (->> possibles
+          (filter test-size)
+          first)
+        (count coll))))
 
 (defn compute-axis [canvas axis]
   (let [{:keys [width height]} (get-size canvas)
@@ -108,7 +108,7 @@
 (defn init []
   (.log js/console "Initializing...")
   (let [view-area ($ "#view-area")]
-    (dochan [[file] (file-dropper ($ "#drop-container"))]
+    (dochan [[file] (file-dropper ($ "body"))]
       (let [image (-> (read-file-as-data-url file) <!
                       (load-image) <!)
             [canvas] (canvas-from-image image)

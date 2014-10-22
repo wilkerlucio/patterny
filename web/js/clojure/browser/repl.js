@@ -5,9 +5,9 @@ goog.require('clojure.browser.event');
 goog.require('clojure.browser.event');
 goog.require('clojure.browser.net');
 goog.require('clojure.browser.net');
-clojure.browser.repl.xpc_connection = (function (){var G__19936 = null;return (cljs.core.atom.cljs$core$IFn$_invoke$arity$1 ? cljs.core.atom.cljs$core$IFn$_invoke$arity$1(G__19936) : cljs.core.atom.call(null,G__19936));
+clojure.browser.repl.xpc_connection = (function (){var G__19934 = null;return (cljs.core.atom.cljs$core$IFn$_invoke$arity$1 ? cljs.core.atom.cljs$core$IFn$_invoke$arity$1(G__19934) : cljs.core.atom.call(null,G__19934));
 })();
-clojure.browser.repl.repl_print = (function repl_print(data){var temp__4220__auto__ = (function (){var G__19938 = clojure.browser.repl.xpc_connection;return (cljs.core.deref.cljs$core$IFn$_invoke$arity$1 ? cljs.core.deref.cljs$core$IFn$_invoke$arity$1(G__19938) : cljs.core.deref.call(null,G__19938));
+clojure.browser.repl.repl_print = (function repl_print(data){var temp__4220__auto__ = (function (){var G__19936 = clojure.browser.repl.xpc_connection;return (cljs.core.deref.cljs$core$IFn$_invoke$arity$1 ? cljs.core.deref.cljs$core$IFn$_invoke$arity$1(G__19936) : cljs.core.deref.call(null,G__19936));
 })();if(cljs.core.truth_(temp__4220__auto__))
 {var conn = temp__4220__auto__;return clojure.browser.net.transmit.cljs$core$IFn$_invoke$arity$3(conn,cljs.core.constant$keyword$42,cljs.core.pr_str.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq([data], 0)));
 } else
@@ -18,7 +18,7 @@ clojure.browser.repl.repl_print = (function repl_print(data){var temp__4220__aut
 * Process a single block of JavaScript received from the server
 */
 clojure.browser.repl.evaluate_javascript = (function evaluate_javascript(conn,block){var result = (function (){try{return new cljs.core.PersistentArrayMap(null, 2, [cljs.core.constant$keyword$43,cljs.core.constant$keyword$46,cljs.core.constant$keyword$41,(''+cljs.core.str.cljs$core$IFn$_invoke$arity$1(eval(block)))], null);
-}catch (e19940){var e = e19940;return new cljs.core.PersistentArrayMap(null, 3, [cljs.core.constant$keyword$43,cljs.core.constant$keyword$45,cljs.core.constant$keyword$41,cljs.core.pr_str.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq([e], 0)),cljs.core.constant$keyword$44,(cljs.core.truth_(e.hasOwnProperty("stack"))?e.stack:"No stacktrace available.")], null);
+}catch (e19938){var e = e19938;return new cljs.core.PersistentArrayMap(null, 3, [cljs.core.constant$keyword$43,cljs.core.constant$keyword$45,cljs.core.constant$keyword$41,cljs.core.pr_str.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq([e], 0)),cljs.core.constant$keyword$44,(cljs.core.truth_(e.hasOwnProperty("stack"))?e.stack:"No stacktrace available.")], null);
 }})();return cljs.core.pr_str.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq([result], 0));
 });
 clojure.browser.repl.send_result = (function send_result(connection,url,data){return clojure.browser.net.transmit.cljs$core$IFn$_invoke$arity$6(connection,url,"POST",data,null,(0));
@@ -55,7 +55,7 @@ send_print.cljs$core$IFn$_invoke$arity$3 = send_print__3;
 return send_print;
 })()
 ;
-clojure.browser.repl.order = (function (){var G__19947 = (0);return (cljs.core.atom.cljs$core$IFn$_invoke$arity$1 ? cljs.core.atom.cljs$core$IFn$_invoke$arity$1(G__19947) : cljs.core.atom.call(null,G__19947));
+clojure.browser.repl.order = (function (){var G__19945 = (0);return (cljs.core.atom.cljs$core$IFn$_invoke$arity$1 ? cljs.core.atom.cljs$core$IFn$_invoke$arity$1(G__19945) : cljs.core.atom.call(null,G__19945));
 })();
 clojure.browser.repl.wrap_message = (function wrap_message(t,data){return cljs.core.pr_str.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq([new cljs.core.PersistentArrayMap(null, 3, [cljs.core.constant$keyword$48,t,cljs.core.constant$keyword$49,data,cljs.core.constant$keyword$50,cljs.core.swap_BANG_.cljs$core$IFn$_invoke$arity$2(clojure.browser.repl.order,cljs.core.inc)], null)], 0));
 });
@@ -76,12 +76,12 @@ return (function (data){return clojure.browser.repl.send_print.cljs$core$IFn$_in
 });})(connection,repl_connection,temp__4220__auto__))
 );
 clojure.browser.net.connect.cljs$core$IFn$_invoke$arity$2(repl_connection,cljs.core.constantly(null));
-var G__19951 = ((function (connection,repl_connection,temp__4220__auto__){
+var G__19949 = ((function (connection,repl_connection,temp__4220__auto__){
 return (function (){return clojure.browser.repl.send_result(connection,url,clojure.browser.repl.wrap_message(cljs.core.constant$keyword$54,"ready"));
 });})(connection,repl_connection,temp__4220__auto__))
-;var G__19952 = (50);return setTimeout(G__19951,G__19952);
+;var G__19950 = (50);return setTimeout(G__19949,G__19950);
 } else
-{var G__19953 = "No 'xpc' param provided to child iframe.";return alert(G__19953);
+{var G__19951 = "No 'xpc' param provided to child iframe.";return alert(G__19951);
 }
 });
 /**

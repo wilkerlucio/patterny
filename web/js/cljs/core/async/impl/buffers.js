@@ -7,8 +7,8 @@ cljs.core.async.impl.buffers.acopy = (function acopy(src,src_start,dest,dest_sta
 if((cnt < len))
 {(dest[(dest_start + cnt)] = (src[(src_start + cnt)]));
 {
-var G__29217 = (cnt + (1));
-cnt = G__29217;
+var G__29215 = (cnt + (1));
+cnt = G__29215;
 continue;
 }
 } else
@@ -29,7 +29,7 @@ this.arr = arr;
 })
 cljs.core.async.impl.buffers.RingBuffer.cljs$lang$type = true;
 cljs.core.async.impl.buffers.RingBuffer.cljs$lang$ctorStr = "cljs.core.async.impl.buffers/RingBuffer";
-cljs.core.async.impl.buffers.RingBuffer.cljs$lang$ctorPrWriter = (function (this__4255__auto__,writer__4256__auto__,opt__4257__auto__){return cljs.core._write(writer__4256__auto__,"cljs.core.async.impl.buffers/RingBuffer");
+cljs.core.async.impl.buffers.RingBuffer.cljs$lang$ctorPrWriter = (function (this__4215__auto__,writer__4216__auto__,opt__4217__auto__){return cljs.core._write(writer__4216__auto__,"cljs.core.async.impl.buffers/RingBuffer");
 });
 cljs.core.async.impl.buffers.RingBuffer.prototype.pop = (function (){var self__ = this;
 var _ = this;if((self__.length === (0)))
@@ -79,16 +79,16 @@ return self__.arr = new_arr;
 }
 });
 cljs.core.async.impl.buffers.RingBuffer.prototype.cleanup = (function (keep_QMARK_){var self__ = this;
-var this$ = this;var n__4548__auto__ = self__.length;var x = (0);while(true){
-if((x < n__4548__auto__))
-{var v_29219 = this$.pop();if(cljs.core.truth_((function (){var G__29218 = v_29219;return (keep_QMARK_.cljs$core$IFn$_invoke$arity$1 ? keep_QMARK_.cljs$core$IFn$_invoke$arity$1(G__29218) : keep_QMARK_.call(null,G__29218));
+var this$ = this;var n__4508__auto__ = self__.length;var x = (0);while(true){
+if((x < n__4508__auto__))
+{var v_29217 = this$.pop();if(cljs.core.truth_((function (){var G__29216 = v_29217;return (keep_QMARK_.cljs$core$IFn$_invoke$arity$1 ? keep_QMARK_.cljs$core$IFn$_invoke$arity$1(G__29216) : keep_QMARK_.call(null,G__29216));
 })()))
-{this$.unshift(v_29219);
+{this$.unshift(v_29217);
 } else
 {}
 {
-var G__29220 = (x + (1));
-x = G__29220;
+var G__29218 = (x + (1));
+x = G__29218;
 continue;
 }
 } else
@@ -117,7 +117,7 @@ this.cljs$lang$protocol_mask$partition0$ = 2;
 })
 cljs.core.async.impl.buffers.FixedBuffer.cljs$lang$type = true;
 cljs.core.async.impl.buffers.FixedBuffer.cljs$lang$ctorStr = "cljs.core.async.impl.buffers/FixedBuffer";
-cljs.core.async.impl.buffers.FixedBuffer.cljs$lang$ctorPrWriter = (function (this__4255__auto__,writer__4256__auto__,opt__4257__auto__){return cljs.core._write(writer__4256__auto__,"cljs.core.async.impl.buffers/FixedBuffer");
+cljs.core.async.impl.buffers.FixedBuffer.cljs$lang$ctorPrWriter = (function (this__4215__auto__,writer__4216__auto__,opt__4217__auto__){return cljs.core._write(writer__4216__auto__,"cljs.core.async.impl.buffers/FixedBuffer");
 });
 cljs.core.async.impl.buffers.FixedBuffer.prototype.cljs$core$ICounted$_count$arity$1 = (function (this$){var self__ = this;
 var this$__$1 = this;return self__.buf.length;
@@ -149,7 +149,7 @@ this.cljs$lang$protocol_mask$partition0$ = 2;
 })
 cljs.core.async.impl.buffers.DroppingBuffer.cljs$lang$type = true;
 cljs.core.async.impl.buffers.DroppingBuffer.cljs$lang$ctorStr = "cljs.core.async.impl.buffers/DroppingBuffer";
-cljs.core.async.impl.buffers.DroppingBuffer.cljs$lang$ctorPrWriter = (function (this__4255__auto__,writer__4256__auto__,opt__4257__auto__){return cljs.core._write(writer__4256__auto__,"cljs.core.async.impl.buffers/DroppingBuffer");
+cljs.core.async.impl.buffers.DroppingBuffer.cljs$lang$ctorPrWriter = (function (this__4215__auto__,writer__4216__auto__,opt__4217__auto__){return cljs.core._write(writer__4216__auto__,"cljs.core.async.impl.buffers/DroppingBuffer");
 });
 cljs.core.async.impl.buffers.DroppingBuffer.prototype.cljs$core$ICounted$_count$arity$1 = (function (this$){var self__ = this;
 var this$__$1 = this;return self__.buf.length;
@@ -185,7 +185,7 @@ this.cljs$lang$protocol_mask$partition0$ = 2;
 })
 cljs.core.async.impl.buffers.SlidingBuffer.cljs$lang$type = true;
 cljs.core.async.impl.buffers.SlidingBuffer.cljs$lang$ctorStr = "cljs.core.async.impl.buffers/SlidingBuffer";
-cljs.core.async.impl.buffers.SlidingBuffer.cljs$lang$ctorPrWriter = (function (this__4255__auto__,writer__4256__auto__,opt__4257__auto__){return cljs.core._write(writer__4256__auto__,"cljs.core.async.impl.buffers/SlidingBuffer");
+cljs.core.async.impl.buffers.SlidingBuffer.cljs$lang$ctorPrWriter = (function (this__4215__auto__,writer__4216__auto__,opt__4217__auto__){return cljs.core._write(writer__4216__auto__,"cljs.core.async.impl.buffers/SlidingBuffer");
 });
 cljs.core.async.impl.buffers.SlidingBuffer.prototype.cljs$core$ICounted$_count$arity$1 = (function (this$){var self__ = this;
 var this$__$1 = this;return self__.buf.length;
