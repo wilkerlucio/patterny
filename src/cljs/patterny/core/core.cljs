@@ -1,6 +1,6 @@
 (ns patterny.core
   (:require-macros [cljs.core.async.macros :refer [go]]
-                   [wilkerdev.util.macros :refer [dochan]])
+                   [wilkerdev.util.macros :refer [dochan bench]])
   (:require [cljs.core.async :refer [chan <! >! put! close!]]
             [goog.events :as events]
             [wilkerdev.util.reactive :as r]
@@ -75,27 +75,26 @@
          (filter test-size)
          first)))
 
-(defn compute-axis-x [canvas]
+(defn compute-axis [canvas axis]
   (let [{:keys [width height]} (get-size canvas)
-        tmp-canvas (create-canvas {:width 1 :height height})
+        axis-map {:x {:size {:width width :height 1}
+                      :range-s height
+                      :crop #(vector 0 % width 1)}
+                  :y {:size {:width 1 :height height}
+                      :range-s width
+                      :crop #(vector % 0 1 height)}}
+        {:keys [size range-s crop]} (get axis-map axis)
+        tmp-canvas (create-canvas size)
         ctx (.getContext tmp-canvas "2d")]
-    (for [n (range width)]
+    (for [n (range range-s)
+          :let [[sx sy sw sh] (crop n)]]
       (do
-        (.drawImage ctx canvas n 0 1 height 0 0 1 height)
-        (.toDataURL tmp-canvas "image/png")))))
-
-(defn compute-axis-y [canvas]
-  (let [{:keys [width height]} (get-size canvas)
-        tmp-canvas (create-canvas {:width width :height 1})
-        ctx (.getContext tmp-canvas "2d")]
-    (for [n (range height)]
-      (do
-        (.drawImage ctx canvas 0 n width 1 0 0 width 1)
+        (.drawImage ctx canvas sx sy sw sh 0 0 sw sh)
         (.toDataURL tmp-canvas "image/png")))))
 
 (defn find-pattern [canvas]
-  (let [rows (vec (compute-axis-x canvas))
-        columns (vec (compute-axis-y canvas))]
+  (let [rows (vec (compute-axis canvas :y))
+        columns (vec (compute-axis canvas :x))]
     {:width (find-series-pattern columns)
      :height (find-series-pattern rows)}))
 
@@ -114,9 +113,7 @@
       (let [image (-> (read-file-as-data-url file) <!
                       (load-image) <!)
             [canvas] (canvas-from-image image)
-            _ (.time js/console "Finding pattern")
-            size (find-pattern canvas)
-            _ (.timeEnd js/console "Finding pattern")]
+            size (bench "Find pattern" (find-pattern canvas))]
         (.appendChild view-area (image-from-canvas-crop canvas size))))))
 
 (init)

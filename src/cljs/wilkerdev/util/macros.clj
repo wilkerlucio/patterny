@@ -30,3 +30,10 @@
        (.log js/console "Passed:" ~title)
        (catch js/Error e#
          (.log js/console "Failed:" ~title ":" (.-stack e#))))))
+
+(defmacro bench [message & body]
+  `(do
+     (.time js/console ~message)
+     (let [res# (do ~@body)]
+       (.timeEnd js/console ~message)
+       res#)))
