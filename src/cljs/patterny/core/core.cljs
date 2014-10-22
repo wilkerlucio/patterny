@@ -3,6 +3,7 @@
                    [wilkerdev.util.macros :refer [dochan bench]])
   (:require [cljs.core.async :refer [chan <! >! put! close!]]
             [goog.events :as events]
+            [wilkerdev.util.dom :as dom]
             [wilkerdev.util.reactive :as r]
             [clojure.browser.repl :as repl]
             [clojure.string :as str]))
@@ -96,23 +97,26 @@
     {:width (find-series-pattern columns)
      :height (find-series-pattern rows)}))
 
-(defn image-from-canvas-crop [canvas {:keys [width height x y]
+(defn data-from-canvas-crop [canvas {:keys [width height x y]
                                       :or {width 1 height 1 x 0 y 0}
                                       :as square}]
   (let [new-canvas (create-canvas square)]
     (doto (.getContext new-canvas "2d")
       (.drawImage canvas x y width height 0 0 width height))
-    (doto (js/Image.)
-      (aset "src" (.toDataURL new-canvas "image/png")))))
+    (.toDataURL new-canvas "image/png")))
 
 (defn init []
   (.log js/console "Initializing...")
-  (let [view-area ($ "#view-area")]
+  (let [view-area ($ "#view-area")
+        cur-img ($ "#current-pattern")]
     (dochan [[file] (file-dropper ($ "body"))]
       (let [image (-> (read-file-as-data-url file) <!
                       (load-image) <!)
             [canvas] (canvas-from-image image)
-            size (bench "Find pattern" (find-pattern canvas))]
-        (.appendChild view-area (image-from-canvas-crop canvas size))))))
+            size (bench "Find pattern" (find-pattern canvas))
+            pattern-data (bench "Generating data" (data-from-canvas-crop canvas size))]
+        (.log js/console (str "url('" pattern-data "')"))
+        (dom/set-style view-area "backgroundImage" (str "url('" pattern-data "')"))
+        (set! (.-src cur-img) pattern-data)))))
 
 (init)

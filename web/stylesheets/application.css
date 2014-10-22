@@ -3,8 +3,31 @@ body {
   height: 100vh;
   overflow: hidden;
 }
-#drop-container {
+#app-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-align: start;
+  -moz-box-align: start;
+  -o-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+#view-area {
   border: 1px solid #000;
-  width: 300px;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   height: 300px;
+}
+#current-pattern {
+  margin-left: 20px;
 }
