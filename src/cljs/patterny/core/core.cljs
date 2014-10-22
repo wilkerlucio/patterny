@@ -31,8 +31,15 @@
         (aset "height" height)))
 
 (defn file-dropper [el]
-  (let [c (chan)]
-    (events/listen el "drop" #(put! c (event-files %)))
+  (let [c (chan)
+        hover (partial dom/toggle-class! el "dragging-over")]
+    (events/listen el "dragenter" #(hover true))
+    (events/listen el "dragover" #(hover true))
+    (events/listen el "dragleave" #(hover false))
+    (events/listen el "dragend" #(hover false))
+    (events/listen el "drop" #(do
+                               (hover false)
+                               (put! c (event-files %))))
     c))
 
 (defn load-image [src]

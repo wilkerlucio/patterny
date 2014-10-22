@@ -14,6 +14,9 @@
 
 (defn set-style! [el style value] (style/setStyle el style value))
 
+(defn has-class? [el name]
+  (classes/has el name))
+
 (defn set-class! [el name]
   (classes/set el name))
 
@@ -22,3 +25,10 @@
 
 (defn remove-class! [el name]
   (classes/remove el name))
+
+(defn toggle-class!
+  ([el name] (toggle-class! el name (not (has-class? el name))))
+  ([el name bool]
+   (if bool
+     (add-class! el name)
+     (remove-class! el name))))

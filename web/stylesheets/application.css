@@ -21,7 +21,7 @@ body {
   flex-direction: column;
 }
 h1 {
-coko
+  color: rgba(0,0,0,0.8);
   font-family: 'Ubuntu', sans-serif;
   text-align: center;
   text-shadow: 2px 2px 3px rgba(255,255,255,0.1);
@@ -94,4 +94,47 @@ body.processed #image-area {
 }
 body.processed .instructions {
   display: none;
+}
+.drop-info {
+  background: #115794;
+  color: #fff;
+  top: 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 18px 10px;
+  text-align: center;
+  font-size: 22px;
+  -webkit-transition: opacity 250ms;
+  -moz-transition: opacity 250ms;
+  -o-transition: opacity 250ms;
+  -ms-transition: opacity 250ms;
+  transition: opacity 250ms;
+  pointer-events: none;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.drop-info > div {
+  width: 100%;
+}
+body.dragging-over .drop-info {
+  opacity: 0.9;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+  filter: alpha(opacity=90);
 }
