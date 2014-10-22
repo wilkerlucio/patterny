@@ -14,8 +14,4 @@
   :cljsbuild  { :builds { :dev { :source-paths ["src/cljs"]
                                  :compiler { :output-to "web/js/patterny.js"
                                              :optimizations :whitespace
-                                             :pretty-print true}}
-                          :worker-dev { :source-paths ["src/cljs"]
-                                 :compiler { :output-to "web/js/worker-patterny.js"
-                                             :optimizations :whitespace
                                              :pretty-print true}}}})

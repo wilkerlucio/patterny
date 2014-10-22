@@ -45,119 +45,69 @@
           (aset "src" src))
     c))
 
-(defn image-size [img] {:width (.-width img) :height (.-height img)})
+(defn get-size [img] {:width (.-width img) :height (.-height img)})
 
 (defn canvas-from-image [img]
-  (let [canvas (create-canvas (image-size img))
+  (let [canvas (create-canvas (get-size img))
         ctx (.getContext canvas "2d")]
     (.drawImage ctx img 0 0)
     [canvas ctx]))
 
-(defn canvas-image-data [canvas]
-  (let [ctx (.getContext canvas "2d")
-        width (.-width canvas)
-        height (.-height canvas)]
-    {:data   (.-data (.getImageData ctx 0 0 width height))
-     :width  width
-     :height height}))
-
-(defn xy-pos [{:keys [width height]} {:keys [x y]}]
-  (* 4 (+ (mod x width)
-          (* (mod y height) width))))
-
-(defn zero-fill [s n p]
-  (let [delta (- n (count s))]
-    (if (> delta 0)
-      (str (str/join (repeat delta p)) s)
-      s)))
-
-(defn color-at-pos [{:keys [data]} pos]
-  {:r (aget data pos)
-   :g (aget data (+ pos 1))
-   :b (aget data (+ pos 2))
-   :a (aget data (+ pos 3))})
-
-(defn color-at [data point]
-  (color-at-pos data (xy-pos data point)))
-
-(defn color-hex [{:keys [r g b a]}]
-  (let [hex (fn [& args] (apply str (map #(zero-fill (.toString % 16) 2 "0") args)))]
-    (hex r g b a)))
-
-(defn hex-color-at [data point] (:hex (color-at data point)))
-
-(defn read-row [{:keys [width height]} y]
-  {:pre [(< y height)]}
-  (->> (range width)
-       (map #(hash-map :x % :y y))))
-
-(defn read-column [{:keys [width height]} x]
-  {:pre [(< x width)]}
-  (->> (range height)
-       (map #(hash-map :x x :y %))))
-
-(defn filter-index [pred coll]
-  (->> (map vector (range) coll)
-       (filter #(pred (second %)))
-       (map first)))
-
-(defn point+ [{x1 :x y1 :y} {x2 :x y2 :y}]
-  {:x (+ x1 x2)
-   :y (+ y1 y2)})
-
-(defn equal-squares? [data
-                      {w1 :width h1 :height :as s1}
-                      {w2 :width h2 :height :as s2}]
-  (if (and (= w1 w2)
-           (= h1 h2))
-    (let [points (for [x (range w1) y (range h1)] {:x x :y y})]
-      (every? (fn [p]
-                (if (= (color-at data (point+ s1 p))
-                       (color-at data (point+ s2 p)))
-                  true
-                  false))
-              points))
-    false))
-
 (defn div-floor [x y] (.floor js/Math (/ x y)))
 (defn div-ceil [x y] (.ceil js/Math (/ x y)))
 
-(defn test-square-possibilities [{fw :width fh :height} {sw :width sh :height}]
-  (for [x (range (div-floor fw sw))
-        y (range (div-floor fh sh))
-        :when (or (> x 0)
-                  (> y 0))]
-    {:x (* x sw) :y (* y sh) :width sw :height sh}))
+(defn find-series-pattern [coll]
+  (let [options-for-size
+        (fn options-for-size [size]
+          (for [x (drop 1 (range (div-floor (count coll) size)))]
+            (* x size)))
+        size-match?
+        (fn size-match? [size x]
+          (let [a (subvec coll 0 size)
+                b (subvec coll x (+ x size))]
+            (= a b)))
+        test-size
+        (fn test-size [size]
+          (every? (partial size-match? size)
+                  (options-for-size size)))
+        possibles (drop 1 (range (div-ceil (count coll) 2)))]
+    (->> possibles
+         (filter test-size)
+         first)))
 
-(defn test-square [data square]
-  (every? (partial equal-squares? data square)
-          (test-square-possibilities data square)))
+(defn compute-axis-x [canvas]
+  (let [{:keys [width height]} (get-size canvas)
+        tmp-canvas (create-canvas {:width 1 :height height})
+        ctx (.getContext tmp-canvas "2d")]
+    (for [n (range width)]
+      (do
+        (.drawImage ctx canvas n 0 1 height 0 0 1 height)
+        (.toDataURL tmp-canvas "image/png")))))
 
-(defn find-pattern [{:keys [width height] :as data}]
-  (let [checks (for [w (drop 1 (range (div-ceil width 2)))
-                     h (drop 1 (range (div-ceil height 2)))]
-                 {:x 0 :y 0 :width w :height h})]
-    (->> checks
-         (filter (partial test-square data))
-         (first))))
+(defn compute-axis-y [canvas]
+  (let [{:keys [width height]} (get-size canvas)
+        tmp-canvas (create-canvas {:width width :height 1})
+        ctx (.getContext tmp-canvas "2d")]
+    (for [n (range height)]
+      (do
+        (.drawImage ctx canvas 0 n width 1 0 0 width 1)
+        (.toDataURL tmp-canvas "image/png")))))
 
-(defn find-next-equal-right [data {:keys [x y] :as point}]
-  (let [current (hex-color-at data point)
-        next (->> (read-row data y)
-                  (drop x)
-                  (map (partial hex-color-at data))
-                  (filter-index #(= % current)))]
-    next))
+(defn find-pattern [canvas]
+  (let [rows (vec (compute-axis-x canvas))
+        columns (vec (compute-axis-y canvas))]
+    {:width (find-series-pattern columns)
+     :height (find-series-pattern rows)}))
 
 (defn init []
-  (repl/connect "http://localhost:9000/repl")
   (let [view-area ($ "#view-area")]
     (dochan [[file] (file-dropper ($ "#drop-container"))]
       (let [image (-> (read-file-as-data-url file) <!
                       (load-image) <!)
-            [canvas] (canvas-from-image image)
-            data (canvas-image-data canvas)]
+            [canvas] (canvas-from-image image)]
         (.appendChild view-area canvas)
-        (.log js/console "res" (clj->js (find-pattern data)))))))
+        (.time js/console "Finding pattern")
+        (.log js/console (clj->js (find-pattern canvas)))
+        (.timeEnd js/console "Finding pattern")))))
 
 (init)
