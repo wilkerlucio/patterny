@@ -99,15 +99,24 @@
     {:width (find-series-pattern columns)
      :height (find-series-pattern rows)}))
 
+(defn image-from-canvas-crop [canvas {:keys [width height x y]
+                                      :or {width 1 height 1 x 0 y 0}
+                                      :as square}]
+  (let [new-canvas (create-canvas square)]
+    (doto (.getContext new-canvas "2d")
+      (.drawImage canvas x y width height 0 0 width height))
+    (doto (js/Image.)
+      (aset "src" (.toDataURL new-canvas "image/png")))))
+
 (defn init []
   (let [view-area ($ "#view-area")]
     (dochan [[file] (file-dropper ($ "#drop-container"))]
       (let [image (-> (read-file-as-data-url file) <!
                       (load-image) <!)
-            [canvas] (canvas-from-image image)]
-        (.appendChild view-area canvas)
-        (.time js/console "Finding pattern")
-        (.log js/console (clj->js (find-pattern canvas)))
-        (.timeEnd js/console "Finding pattern")))))
+            [canvas] (canvas-from-image image)
+            _ (.time js/console "Finding pattern")
+            size (find-pattern canvas)
+            _ (.timeEnd js/console "Finding pattern")]
+        (.appendChild view-area (image-from-canvas-crop canvas size))))))
 
 (init)
