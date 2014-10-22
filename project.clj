@@ -17,5 +17,7 @@
                                              :pretty-print true}}
                           :release { :source-paths ["src/cljs"]
                                  :compiler { :output-to "web/js/patterny.js"
+                                             :output-dir "web/js"
                                              :optimizations :advanced
-                                             :pretty-print false}}}})
+                                             :pretty-print false
+                                             :source-map "web/js/patterny.js.map"}}}})

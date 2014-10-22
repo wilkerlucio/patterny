@@ -20,9 +20,6 @@
        ~@body
        (catch js/Error e e))))
 
-(defmacro <!expand [value]
-  `(cljs.core.async/<! (wilkerdev.util.reactive/expand-value ~value)))
-
 (defmacro test [title & body]
   `(cljs.core.async.macros/go
      (try
