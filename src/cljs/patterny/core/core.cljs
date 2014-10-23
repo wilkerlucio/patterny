@@ -60,13 +60,13 @@
 (defn find-series-pattern [coll]
   (let [options-for-size
         (fn options-for-size [size]
-          (for [x (drop 1 (range (div-floor (count coll) size)))]
-            (* x size)))
+          (->> (range (div-floor (count coll) size))
+               (drop 1)
+               (map (partial * size))))
         size-match?
         (fn size-match? [size x]
-          (let [a (subvec coll 0 size)
-                b (subvec coll x (+ x size))]
-            (= a b)))
+          (= (subvec coll 0 size)
+             (subvec coll x (+ x size))))
         test-size
         (fn test-size [size]
           (every? (partial size-match? size)
