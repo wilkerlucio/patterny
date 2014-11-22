@@ -59,8 +59,8 @@ h2 {
   align-items: flex-start;
 }
 #current-pattern {
-  -webkit-box-shadow: #000 0px 0px 10px 3px;
-  box-shadow: #000 0px 0px 10px 3px;
+  -webkit-box-shadow: #000 0 0 10px 3px;
+  box-shadow: #000 0 0 10px 3px;
   border: 10px solid #fff;
   margin: 20px auto;
   display: block;

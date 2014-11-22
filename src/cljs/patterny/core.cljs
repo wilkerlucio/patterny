@@ -1,11 +1,9 @@
 (ns patterny.core
   (:require-macros [cljs.core.async.macros :refer [go]]
                    [wilkerdev.util.macros :refer [dochan bench]])
-  (:require [cljs.core.async :refer [chan <! >! put! close!]]
-            [goog.events :as events]
+  (:require [cljs.core.async :refer [chan <! >! put! close!] :as async]
             [wilkerdev.util.dom :as dom]
             [wilkerdev.util.reactive :as r]
-            [clojure.browser.repl :as repl]
             [clojure.string :as str]))
 
 (defn event-files [evt]
@@ -21,6 +19,18 @@
           (.readAsDataURL file))
     c))
 
+(defn file-pick-on-click [el]
+  (let [c (chan 1)
+        input (doto (.createElement dom/document "input")
+                    (aset "type" "file")
+                    (dom/set-style! "display" "none"))]
+    (dom/listen input "change" #(put! c (array-seq (.-files input))))
+    (dom/listen el "click" #(do
+                             (.preventDefault %)
+                             (dom/trigger input "click")))
+    (.appendChild dom/body input)
+    c))
+
 (defn create-canvas [{:keys [width height]}]
   (doto (.createElement js/document "canvas")
         (aset "width" width)
@@ -29,11 +39,11 @@
 (defn file-dropper [el]
   (let [c (chan)
         hover (partial dom/toggle-class! el "dragging-over")]
-    (events/listen el "dragenter" #(hover true))
-    (events/listen el "dragover" #(hover true))
-    (events/listen el "dragleave" #(hover false))
-    (events/listen el "dragend" #(hover false))
-    (events/listen el "drop" #(do
+    (dom/listen el "dragenter" #(hover true))
+    (dom/listen el "dragover" #(hover true))
+    (dom/listen el "dragleave" #(hover false))
+    (dom/listen el "dragend" #(hover false))
+    (dom/listen el "drop" #(do
                                (hover false)
                                (put! c (event-files %))))
     c))
@@ -109,8 +119,10 @@
     (.toDataURL new-canvas "image/png")))
 
 (defn init []
-  (let [cur-img (dom/$ "#current-pattern")]
-    (dochan [[file] (file-dropper dom/body)]
+  (let [cur-img (dom/$ "#current-pattern")
+        file-picker (file-pick-on-click (dom/$ "#js-pick-image"))
+        file-dropper (file-dropper dom/body)]
+    (dochan [[file] (async/merge [file-picker file-dropper])]
       (let [image (-> (read-file-as-data-url file) <!
                       (load-image) <!)
             [canvas] (canvas-from-image image)

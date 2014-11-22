@@ -1,6 +1,7 @@
 (ns wilkerdev.util.dom
   (:require [goog.style :as style]
             [goog.dom :as dom]
+            [goog.events :as events]
             [goog.dom.classes :as classes]))
 
 (def document js/document)
@@ -25,6 +26,12 @@
 
 (defn remove-class! [el name]
   (classes/remove el name))
+
+(def listen events/listen)
+
+(defn trigger [el evt-name]
+  (let [evt (js/Event. evt-name)]
+    (.dispatchEvent el evt)))
 
 (defn toggle-class!
   ([el name] (toggle-class! el name (not (has-class? el name))))

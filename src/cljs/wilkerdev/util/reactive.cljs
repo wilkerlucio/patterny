@@ -341,3 +341,12 @@
     (alt!
       c ([x] x)
       (async/timeout msec) (js/Error. (str "Timeout " msec "ms")))))
+
+(defn time
+  "Times how long a channel takes to respond"
+  [f message]
+  (go
+    (.time js/console message)
+    (let [res (<! (f))]
+      (.timeEnd js/console message)
+      res)))
