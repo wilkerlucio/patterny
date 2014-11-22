@@ -1,7 +1,7 @@
 # Patterny
 
 Pattern is a tool for extracting the minimum pattern of an image. Just visit the
-[website](http://wilker-dev.com/patterny/) to use it.
+[website](http://wilkerlucio.github.io/patterny/) to use it.
 
 ## Development
 
