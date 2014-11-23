@@ -122,6 +122,7 @@
 (defn init []
   (let [cur-img (dom/$ "#current-pattern")
         file-chan (async/merge [(file-pick-on-click (dom/$ "#js-pick-image"))
+                                (file-pick-on-click (dom/$ "#js-pick-image-after"))
                                 (file-dropper dom/body)])]
     (dochan [[file] file-chan]
             (let [image (-> (read-file-as-data-url file) <!
