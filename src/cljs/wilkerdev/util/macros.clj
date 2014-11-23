@@ -1,5 +1,5 @@
 (ns wilkerdev.util.macros
-  (:refer-clojure :exclude [test]))
+  (:refer-clojure :exclude [test time]))
 
 (defmacro dochan [[binding chan] & body]
   `(let [chan# ~chan]
@@ -28,7 +28,9 @@
        (catch js/Error e#
          (.log js/console "Failed:" ~title ":" (.-stack e#))))))
 
-(defmacro bench [message & body]
+; like the regular clojure time, but it takes advantages of javascript console
+; timing capabilities
+(defmacro time [message & body]
   `(do
      (.time js/console ~message)
      (let [res# (do ~@body)]

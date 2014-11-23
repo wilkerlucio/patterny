@@ -1,6 +1,7 @@
 (ns patterny.core
+  (:refer-clojure :exclude [time])
   (:require-macros [cljs.core.async.macros :refer [go]]
-                   [wilkerdev.util.macros :refer [dochan bench]])
+                   [wilkerdev.util.macros :refer [dochan time]])
   (:require [cljs.core.async :refer [chan <! >! put! close!] :as async]
             [wilkerdev.util.dom :as dom]
             [wilkerdev.util.reactive :as r]
@@ -126,8 +127,8 @@
             (let [image (-> (read-file-as-data-url file) <!
                             (load-image) <!)
                   [canvas] (canvas-from-image image)
-                  size (bench "Find pattern" (find-pattern canvas))
-                  pattern-data (bench "Generating data" (data-from-canvas-crop canvas size))]
+                  size (time "Find pattern" (find-pattern canvas))
+                  pattern-data (time "Generating data" (data-from-canvas-crop canvas size))]
               (doto dom/body
                     (dom/set-style! "backgroundImage" (str "url('" pattern-data "')"))
                     (dom/add-class! "processed"))
