@@ -44,8 +44,8 @@
     (dom/listen el "dragleave" #(hover false))
     (dom/listen el "dragend" #(hover false))
     (dom/listen el "drop" #(do
-                               (hover false)
-                               (put! c (event-files %))))
+                            (hover false)
+                            (put! c (event-files %))))
     c))
 
 (defn load-image [src]
@@ -83,18 +83,18 @@
                   (options-for-size size)))
         possibles (drop 1 (range (div-ceil (count coll) 2)))]
     (or (->> possibles
-          (filter test-size)
-          first)
+             (filter test-size)
+             first)
         (count coll))))
 
 (defn compute-axis [canvas axis]
   (let [{:keys [width height]} (get-size canvas)
-        axis-map {:x {:size {:width width :height 1}
+        axis-map {:x {:size    {:width width :height 1}
                       :range-s height
-                      :crop #(vector 0 % width 1)}
-                  :y {:size {:width 1 :height height}
+                      :crop    #(vector 0 % width 1)}
+                  :y {:size    {:width 1 :height height}
                       :range-s width
-                      :crop #(vector % 0 1 height)}}
+                      :crop    #(vector % 0 1 height)}}
         {:keys [size range-s crop]} (get axis-map axis)
         tmp-canvas (create-canvas size)
         ctx (.getContext tmp-canvas "2d")]
@@ -107,31 +107,31 @@
 (defn find-pattern [canvas]
   (let [rows (vec (compute-axis canvas :y))
         columns (vec (compute-axis canvas :x))]
-    {:width (find-series-pattern columns)
+    {:width  (find-series-pattern columns)
      :height (find-series-pattern rows)}))
 
 (defn data-from-canvas-crop [canvas {:keys [width height x y]
-                                      :or {width 1 height 1 x 0 y 0}
-                                      :as square}]
+                                     :or   {width 1 height 1 x 0 y 0}
+                                     :as   square}]
   (let [new-canvas (create-canvas square)]
     (doto (.getContext new-canvas "2d")
-      (.drawImage canvas x y width height 0 0 width height))
+          (.drawImage canvas x y width height 0 0 width height))
     (.toDataURL new-canvas "image/png")))
 
 (defn init []
   (let [cur-img (dom/$ "#current-pattern")
-        file-picker (file-pick-on-click (dom/$ "#js-pick-image"))
-        file-dropper (file-dropper dom/body)]
-    (dochan [[file] (async/merge [file-picker file-dropper])]
-      (let [image (-> (read-file-as-data-url file) <!
-                      (load-image) <!)
-            [canvas] (canvas-from-image image)
-            size (bench "Find pattern" (find-pattern canvas))
-            pattern-data (bench "Generating data" (data-from-canvas-crop canvas size))]
-        (doto dom/body
-              (dom/set-style! "backgroundImage" (str "url('" pattern-data "')"))
-              (dom/add-class! "processed"))
-        (set! (.-src cur-img) pattern-data)))
+        file-chan (async/merge [(file-pick-on-click (dom/$ "#js-pick-image"))
+                                (file-dropper dom/body)])]
+    (dochan [[file] file-chan]
+            (let [image (-> (read-file-as-data-url file) <!
+                            (load-image) <!)
+                  [canvas] (canvas-from-image image)
+                  size (bench "Find pattern" (find-pattern canvas))
+                  pattern-data (bench "Generating data" (data-from-canvas-crop canvas size))]
+              (doto dom/body
+                    (dom/set-style! "backgroundImage" (str "url('" pattern-data "')"))
+                    (dom/add-class! "processed"))
+              (set! (.-src cur-img) pattern-data)))
     (.log js/console (clj->js "Ready"))))
 
 (init)
